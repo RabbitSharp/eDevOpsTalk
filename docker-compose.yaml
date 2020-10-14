@@ -10,7 +10,7 @@ services:
 
   vote-app:
     build: ./vote
-    image: edevopstalk.azurecr.io/vote-app:v1
+    image: edevopstalk.azurecr.io/voteapp:latest
     container_name: vote-app
     environment:
       REDIS: vote-redis

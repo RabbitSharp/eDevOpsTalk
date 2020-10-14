@@ -28,7 +28,7 @@ kubectl get nodes
 ##
 kubectl apply -f vote.yaml
 # Test app
-kubectl get service azure-vote-front --watch
+kubectl get service vote-app --watch
 
 
 ##

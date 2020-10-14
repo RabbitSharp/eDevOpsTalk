@@ -59,7 +59,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: vote-app
-        image: edevopstalk.azurecr.io/vote-app:v1
+        image: edevopstalk.azurecr.io/voteapp:latest
         resources:
           requests:
             cpu: 100m
