@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-redis
+  template:
+    metadata:
+      labels:
+        app: vote-redis
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: vote-redis
+        image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 6379
+          name: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote-redis
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: vote-redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-app
+  template:
+    metadata:
+      labels:
+        app: vote-app
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: vote-app
+        image: edevopstalk.azurecr.io/vote-app:v1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+        env:
+        - name: REDIS
+          value: "vote-redis"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: vote-app
