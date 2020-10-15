@@ -33,7 +33,7 @@ kubectl get service vote-app --watch
 ##
 ## Update app
 ##
-#kubectl set image deployment vote-app vote-app=edevopstalk.azurecr.io/voteapp::$(tag)
+#kubectl set image deployment vote-app vote-app=edevopstalk.azurecr.io/voteapp:$(tag)
 
 
 ##
